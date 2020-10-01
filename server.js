@@ -3,6 +3,11 @@ const app=express();
 const bodyParser=require("body-parser");
 const bcrypt=require("bcrypt-nodejs");
 const cors=require("cors");
+const path = require("path");
+
+app.set('views', path.join(__dirname, 'views'))
+app.set('view engine', 'ejs')
+
 
 const db = require('knex')({
   client: 'pg',
@@ -25,6 +30,11 @@ const profile=require('./collectors/profile.js');
 app.use(bodyParser.urlencoded({extended:false}));
 app.use(bodyParser.json());
 app.use(cors());
+
+
+app.get('/', (req,res) => {
+    res.render('home');
+});
 
 app.post("/register",(req,res)=>{register.registerHandler(req,res,bcrypt,db)});
 app.post("/signin",(req,res)=>{signin.signinHandler(req,res,bcrypt,db)});
